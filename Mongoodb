@@ -1,0 +1,64 @@
+To move to your database
+use movie
+
+insert one record
+db.user.insertone({id:4,name:"himani",email:"himani@gmail.com",age:24})
+
+
+insert many record
+
+db.user.insertMany([
+{
+id:11,
+name:"anu",
+email:"anu@gmail.com",
+age:20
+},
+{
+id:11,
+name:"anu",
+email:"anu@gmail.com",
+age:20
+}
+])
+
+select * from tbl
+
+db.collectionname.find();
+db.user.find()
+db.user.find({country:"india"})
+db.user.find({country:{$in:['india','japan']}})
+db.user.find({country:{$nin:['india','japan']}})
+db.user.find( { population:{ $gt: 20 } } )
+db.user.find( { population:{ $lt: 20 } } )
+db.user.find( { population:{ $gte: 20 } } )
+db.user.find( { population:{ $lte: 20 } } )
+db.user.find( { country:{ $eq: "india"} } )
+db.user.find( { country:{ $ne: "india"} } )
+
+
+db.user.deleteOne({name:"keerthi"})
+
+db.user.updateOne({country:"india"},$set:{{population:20.4546},{geo:'6374637'}})
+
+db.user.find({companyname:{$in:["IBM","Infosys"]})
+
+db.user.find({salary:{$gt:30000}})
+
+$lt
+$gte
+$lte
+$eq
+$ne
+$in
+$nin
+
+
+db.user.find({$and:[{salary:{$gt:50000}},{companyname:"IBM"}]})
+
+db.user.find({$or:[{salary:{$gt:50000}},{companyname:"IBM"}]})
+
+
+
+salary>40000 && age>25 and the company should not IBM
+db.user.find({$and:[{salary:{$gt:40000}},{age:{$gt:25}},{companyname:{$ne:"IBM"}}]})
