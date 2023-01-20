@@ -1,0 +1,125 @@
+
+package book;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+@Entity
+public class book {
+private String name,email,address;
+private  @Id @GeneratedValue Long id;
+Long phone;
+public book() {
+// TODO Auto-generated constructor stub
+}
+public book(String name,String email,String address,Long phone) {
+this.name = name;
+this.email = email;
+this.address=address;
+this.phone = phone;
+}
+public String getName() {
+return name;
+}
+public void setName(String name) {
+this.name = name;
+}
+public String getEmail() {
+return email;
+}
+public void setEmail(String email) {
+this.email = email;
+}
+public Long getId() {
+return id;
+}
+public void setId(Long id) {
+this.id = id;
+}
+public String getAddress() {
+return address;
+}
+public void setAddress(String address) {
+this.address = address;
+}
+public Long getPhone() {
+return phone;
+}
+public void setPhone(Long phone) {
+this.phone = phone;
+}
+}
+
+----------------------------------------------------------
+
+
+  package book;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+@SpringBootApplication
+public class bookapplication {
+public static void main(String[] args) {
+// TODO Auto-generated method stub
+SpringApplication.run(bookapplication.class, args);
+}
+}
+
+--------------------------------------------------------------
+
+
+
+
+  package book;
+import java.util.List;
+import java.util.Optional;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+@RestController
+public class bookcontroller {
+private bookinterface repository;
+public bookcontroller(bookinterface repository) {
+this.repository = repository;
+}
+@GetMapping("/book")
+List<book> all() {
+return repository.findAll();
+}
+@PostMapping("/book")
+book save(@RequestBody book newbook) {
+return repository.save(newbook);
+}
+@GetMapping("/book/{id}")
+book get(@PathVariable Long id){
+return repository.findById(id)
+.orElseThrow(()-> new RuntimeException(String.format("book with this id %s is not found ",id)));
+}
+@PutMapping("/book/{id}")
+Optional<book> update(@PathVariable Long id, @RequestBody book newbook) {
+return repository.findById(id).map(book -> {
+book.setName(newbook.getName());
+book.setEmail(newbook.getEmail());
+book.setAddress(newbook.getAddress());
+book.setPhone(newbook.getPhone());
+return book;
+});
+}
+@DeleteMapping("/book/{id}")
+void delete(@PathVariable Long id){
+repository.deleteById(id);
+}
+}
+
+
+--------------------------------------------------------------------------
+
+
+
+package book;
+import org.springframework.data.jpa.repository.JpaRepository;
+public interface bookinterface extends JpaRepository<book, Long>{
+}
+--------------------------------------------------------------------------
